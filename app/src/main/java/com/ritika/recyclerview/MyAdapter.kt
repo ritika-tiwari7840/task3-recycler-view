@@ -14,63 +14,44 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
+class MyAdapter(var newsArrayList: ArrayList<News>, var context: Activity) :
+    RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
+        private lateinit var myListner:onItemClickListner
 
-class MyAdapter(private var newsArrayList: ArrayList<News>, private var context: Activity) :
-    RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+        interface onItemClickListner{
+            fun onItemClick(position: Int)
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.each_item, parent, false)
-        return MyViewHolder(itemView)
+        }
+    fun setItemClickListner(listner: onItemClickListner){
+        myListner=listner
     }
 
-    // Populate items with data
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentItem = newsArrayList[position]
-        holder.h_title.text = getClickableSpannableText(currentItem.newsHeading)
+    //To create new view instance when layout manager fails to find a suitable view for each item
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter.MyViewHolder {
+        val itemView=LayoutInflater.from(parent.context).inflate(R.layout.each_item,parent,false)
+        return MyViewHolder(itemView,myListner)
+    }
+
+    //populate items with data
+    override fun onBindViewHolder(holder: MyAdapter.MyViewHolder, position: Int) {
+        val currentItem=newsArrayList[position]
+        holder.h_title.text=currentItem.newsHeading
         holder.h_img.setImageResource(currentItem.newsImage)
-        holder.h_title.movementMethod = LinkMovementMethod.getInstance() // Enable link clicks
     }
 
     override fun getItemCount(): Int {
         return newsArrayList.size
     }
+    class MyViewHolder(itemView: View,listner: onItemClickListner) :RecyclerView.ViewHolder(itemView){
+        val h_title=itemView.findViewById<TextView>(R.id.card_heading)
+        val h_img=itemView.findViewById<ShapeableImageView>(R.id.card_image)
 
-    // Function to make the URLs in the text clickable
-    private fun getClickableSpannableText(newsHeading: String): SpannableString {
-        val spannableString = SpannableString(newsHeading)
-
-
-        var startIndex = newsHeading.indexOf("Visit:")
-        while (startIndex != -1) {
-            val urlStart = startIndex + 7
-            val urlEnd = newsHeading.indexOf(' ', urlStart).takeIf { it != -1 } ?: newsHeading.length
-
-
-            val url = newsHeading.substring(urlStart, urlEnd)
-            val clickableSpan = object : ClickableSpan() {
-                override fun onClick(widget: View) {
-                    try {
-                        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        context.startActivity(browserIntent)
-                    } catch (e: Exception) {
-                        Toast.makeText(context, "Invalid URL: $url", Toast.LENGTH_SHORT).show()
-                    }
-                }
+        init {
+            itemView.setOnClickListener {
+              listner.onItemClick(adapterPosition)
             }
-
-
-            spannableString.setSpan(clickableSpan, startIndex, urlEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-
-            startIndex = newsHeading.indexOf("Visit:", urlEnd)
         }
-
-        return spannableString
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val h_title: TextView = itemView.findViewById(R.id.card_heading)
-        val h_img: ShapeableImageView = itemView.findViewById(R.id.card_image)
-    }
+
 }
