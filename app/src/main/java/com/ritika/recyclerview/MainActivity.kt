@@ -31,10 +31,10 @@ class MainActivity : AppCompatActivity() {
 val newsHeading= arrayOf(
     "Steve Bannon, a former strategist for Donald Trump, will be released from prison next week after serving four months behind bars for contempt of Congress \n \n Visit: https://www.bbc.com/news/live/cpdqw2yd00dt",
     "Musk is giving some US voters $1m. Is it legal? \n \n Visit: https://www.bbc.com/news/articles/ced0d1g5zyno",
-    "Ex-president of Peru gets 20 years for corruption \n \n Visit : https://www.bbc.com/news/articles/cx252e2q055o",
-    "US to curb AI investment in China soon \n \n Visit : https://www.reuters.com/technology/artificial-intelligence",
-    "Microsoft to let clients build AI agents for routine tasks from November \n \n Visit : https://www.reuters.com/technology/artificial-intelligence",
-    "US unveils new rules to block China, Russia and Iran from accessing bulk US data  \n\n Visit : https://www.reuters.com/technology/artificial-intelligence"
+    "Ex-president of Peru gets 20 years for corruption \n \n Visit: https://www.bbc.com/news/articles/cx252e2q055o",
+    "US to curb AI investment in China soon \n \n Visit: https://www.reuters.com/technology/artificial-intelligence",
+    "Microsoft to let clients build AI agents for routine tasks from November \n \n Visit: https://www.reuters.com/technology/artificial-intelligence",
+    "US unveils new rules to block China, Russia and Iran from accessing bulk US data  \n\n Visit: https://www.reuters.com/technology/artificial-intelligence"
 )
 
         myRecyclerView.layoutManager=LinearLayoutManager(this)
